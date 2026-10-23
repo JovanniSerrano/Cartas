@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartas para usted ❤️😚</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for romantic icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #2b080c 0%, #4a0e17 40%, #1f0407 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .font-cursive {
+            font-family: 'Great Vibes', cursive;
+        }
+
+        .font-handwriting {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .font-serif-romantic {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Floating Hearts Animation Background */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-heart {
+            position: absolute;
+            bottom: -50px;
+            color: rgba(244, 63, 94, 0.25);
+            animation: floatUp 9s linear infinite;
+            user-select: none;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.8);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-110vh) rotate(360deg) scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        /* Envelope Flip & Interactive Styles */
+        .card-perspective {
+            perspective: 1000px;
+        }
+
+        .envelope-card {
+            transition: transform 0.6s ease;
+            transform-style: preserve-3d;
+        }
+
+        /* Envelope Open Effect */
+        .envelope-flap {
+            clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+            transition: all 0.5s ease;
+        }
+
+        /* Wax Seal Style */
+        .wax-seal {
+            background: radial-gradient(circle at 30% 30%, #f43f5e, #9f1239, #4c0519);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Parchment Paper Texture for Letter Document */
+        .parchment-paper {
+            background-color: #fdfbf7;
+            background-image: radial-gradient(#e5d5c0 1px, transparent 0);
+            background-size: 24px 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 60px rgba(184, 138, 92, 0.2);
+            color: #2c1810;
+        }
+
+        /* Golden Sparkle Glow */
+        .gold-glow {
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.3);
+        }
+
+        .gold-border {
+            border: 2px solid #eab308;
+        }
+
+        /* Custom Scrollbar for Letter Modal */
+        .letter-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .letter-scroll::-webkit-scrollbar-track {
+            background: #f1e5d1;
+            border-radius: 4px;
+        }
+        .letter-scroll::-webkit-scrollbar-thumb {
+            background: #be123c;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col justify-between" id="globalBody">
+
+    <!-- Animación de Fondo de Corazones -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- PANTALLA PRINCIPAL DE CARTAS / HUB -->
+    <div id="hubScreen" class="relative z-10 container mx-auto px-4 py-10 transition-opacity duration-500">
+        
+        <!-- Header Principal -->
+        <header class="text-center mb-12">
+            <div class="inline-block p-4 rounded-full bg-rose-950/60 border border-rose-500/40 text-rose-400 mb-4 gold-glow">
+                <i class="fa-solid fa-heart-envelope text-4xl sm:text-5xl animate-bounce"></i>
+            </div>
+            <h1 class="font-cursive text-5xl sm:text-7xl text-rose-300 drop-shadow-md mb-2">Cartas Guardadas Para Ti</h1>
+            <p class="font-handwriting text-2xl sm:text-3xl text-amber-200">
+                Haz clic en un sobre para revelar su título, y vuelve a hacer clic para leer la carta.
+            </p>
+        </header>
+
+        <!-- Grid de Cartas / Sobres Cerrados -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto px-2">
+
+            <!-- SOBRE 1 -->
+            <div class="card-perspective h-72 cursor-pointer group envelope-item" onclick="toggleEnvelope(event, 1)">
+                <div id="envelope-1" class="envelope-card relative w-full h-full rounded-2xl bg-gradient-to-br from-rose-900 via-rose-950 to-red-950 border-2 border-amber-500/50 shadow-2xl p-6 flex flex-col justify-between overflow-hidden group-hover:border-amber-400">
+                    <!-- Solapa de sobre dibujada -->
+                    <div id="flap-1" class="absolute inset-0 bg-rose-800/40 border-b border-amber-500/30 envelope-flap transition-transform duration-500"></div>
+                    
+                    <!-- Número de Carta y Sello de Cera -->
+                    <div class="flex justify-between items-start z-10">
+                        <span class="font-handwriting text-2xl text-amber-300/80">Carta N° 01</span>
+                        <div class="wax-seal w-12 h-12 rounded-full flex items-center justify-center text-amber-200 border border-amber-400/40 shadow-lg">
+                            <i class="fa-solid fa-heart text-lg"></i>
+                        </div>
+                    </div>
+
+                    <!-- Mensaje Inicial / Título Revelado -->
+                    <div class="text-center z-10 my-auto py-2">
+                        <div id="title-preview-1" class="transition-all duration-500">
+                            <p class="font-handwriting text-2xl text-rose-200/70 group-hover:text-amber-200">✨ Toca para revelar el sobre ✨</p>
+                        </div>
+                        <div id="title-revealed-1" class="hidden transition-all duration-500 transform scale-95 opacity-0">
+                            <span class="text-xs uppercase tracking-widest text-amber-400 font-semibold">Sección Revelada</span>
+                            <h2 class="font-handwriting text-3xl sm:text-4xl text-rose-100 font-bold mt-1">Por qué me gustas</h2>
+                            <p class="text-xs text-rose-300 mt-2 italic">(Toca nuevamente para leer la carta completa)</p>
+                        </div>
+                    </div>
+
+                    <!-- Botón de Acción -->
+                    <div class="z-10 text-center">
+                        <button id="btn-1" class="w-full py-2 rounded-xl bg-rose-800/50 border border-rose-500/40 text-amber-200 font-medium text-sm group-hover:bg-rose-700/60 transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-envelope-open"></i> <span>Abrir Sobre</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SOBRE 2 -->
+            <div class="card-perspective h-72 cursor-pointer group envelope-item" onclick="toggleEnvelope(event, 2)">
+                <div id="envelope-2" class="envelope-card relative w-full h-full rounded-2xl bg-gradient-to-br from-rose-900 via-rose-950 to-red-950 border-2 border-amber-500/50 shadow-2xl p-6 flex flex-col justify-between overflow-hidden group-hover:border-amber-400">
+                    <div id="flap-2" class="absolute inset-0 bg-rose-800/40 border-b border-amber-500/30 envelope-flap transition-transform duration-500"></div>
+                    
+                    <div class="flex justify-between items-start z-10">
+                        <span class="font-handwriting text-2xl text-amber-300/80">Carta N° 02</span>
+                        <div class="wax-seal w-12 h-12 rounded-full flex items-center justify-center text-amber-200 border border-amber-400/40 shadow-lg">
+                            <i class="fa-solid fa-hourglass-start text-lg"></i>
+                        </div>
+                    </div>
+
+                    <div class="text-center z-10 my-auto py-2">
+                        <div id="title-preview-2" class="transition-all duration-500">
+                            <p class="font-handwriting text-2xl text-rose-200/70 group-hover:text-amber-200">✨ Toca para revelar el sobre ✨</p>
+                        </div>
+                        <div id="title-revealed-2" class="hidden transition-all duration-500 transform scale-95 opacity-0">
+                            <span class="text-xs uppercase tracking-widest text-amber-400 font-semibold">Sección Revelada</span>
+                            <h2 class="font-handwriting text-3xl sm:text-4xl text-rose-100 font-bold mt-1">Desde cuándo me gustas</h2>
+                            <p class="text-xs text-rose-300 mt-2 italic">(Toca nuevamente para leer la carta completa)</p>
+                        </div>
+                    </div>
+
+                    <div class="z-10 text-center">
+                        <button id="btn-2" class="w-full py-2 rounded-xl bg-rose-800/50 border border-rose-500/40 text-amber-200 font-medium text-sm group-hover:bg-rose-700/60 transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-envelope-open"></i> <span>Abrir Sobre</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SOBRE 3 -->
+            <div class="card-perspective h-72 cursor-pointer group envelope-item" onclick="toggleEnvelope(event, 3)">
+                <div id="envelope-3" class="envelope-card relative w-full h-full rounded-2xl bg-gradient-to-br from-rose-900 via-rose-950 to-red-950 border-2 border-amber-500/50 shadow-2xl p-6 flex flex-col justify-between overflow-hidden group-hover:border-amber-400">
+                    <div id="flap-3" class="absolute inset-0 bg-rose-800/40 border-b border-amber-500/30 envelope-flap transition-transform duration-500"></div>
+                    
+                    <div class="flex justify-between items-start z-10">
+                        <span class="font-handwriting text-2xl text-amber-300/80">Carta N° 03</span>
+                        <div class="wax-seal w-12 h-12 rounded-full flex items-center justify-center text-amber-200 border border-amber-400/40 shadow-lg">
+                            <i class="fa-solid fa-eye text-lg"></i>
+                        </div>
+                    </div>
+
+                    <div class="text-center z-10 my-auto py-2">
+                        <div id="title-preview-3" class="transition-all duration-500">
+                            <p class="font-handwriting text-2xl text-rose-200/70 group-hover:text-amber-200">✨ Toca para revelar el sobre ✨</p>
+                        </div>
+                        <div id="title-revealed-3" class="hidden transition-all duration-500 transform scale-95 opacity-0">
+                            <span class="text-xs uppercase tracking-widest text-amber-400 font-semibold">Sección Revelada</span>
+                            <h2 class="font-handwriting text-3xl sm:text-4xl text-rose-100 font-bold mt-1">Cuál fue mi primera impresión</h2>
+                            <p class="text-xs text-rose-300 mt-2 italic">(Toca nuevamente para leer la carta completa)</p>
+                        </div>
+                    </div>
+
+                    <div class="z-10 text-center">
+                        <button id="btn-3" class="w-full py-2 rounded-xl bg-rose-800/50 border border-rose-500/40 text-amber-200 font-medium text-sm group-hover:bg-rose-700/60 transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-envelope-open"></i> <span>Abrir Sobre</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SOBRE 4 -->
+            <div class="card-perspective h-72 cursor-pointer group envelope-item" onclick="toggleEnvelope(event, 4)">
+                <div id="envelope-4" class="envelope-card relative w-full h-full rounded-2xl bg-gradient-to-br from-rose-900 via-rose-950 to-red-950 border-2 border-amber-500/50 shadow-2xl p-6 flex flex-col justify-between overflow-hidden group-hover:border-amber-400">
+                    <div id="flap-4" class="absolute inset-0 bg-rose-800/40 border-b border-amber-500/30 envelope-flap transition-transform duration-500"></div>
+                    
+                    <div class="flex justify-between items-start z-10">
+                        <span class="font-handwriting text-2xl text-amber-300/80">Carta N° 04</span>
+                        <div class="wax-seal w-12 h-12 rounded-full flex items-center justify-center text-amber-200 border border-amber-400/40 shadow-lg">
+                            <i class="fa-solid fa-sparkles text-lg"></i>
+                        </div>
+                    </div>
+
+                    <div class="text-center z-10 my-auto py-2">
+                        <div id="title-preview-4" class="transition-all duration-500">
+                            <p class="font-handwriting text-2xl text-rose-200/70 group-hover:text-amber-200">✨ Toca para revelar el sobre ✨</p>
+                        </div>
+                        <div id="title-revealed-4" class="hidden transition-all duration-500 transform scale-95 opacity-0">
+                            <span class="text-xs uppercase tracking-widest text-amber-400 font-semibold">Sección Revelada</span>
+                            <h2 class="font-handwriting text-3xl sm:text-4xl text-rose-100 font-bold mt-1">Cómo me di cuenta que me gustaba</h2>
+                            <p class="text-xs text-rose-300 mt-2 italic">(Toca nuevamente para leer la carta completa)</p>
+                        </div>
+                    </div>
+
+                    <div class="z-10 text-center">
+                        <button id="btn-4" class="w-full py-2 rounded-xl bg-rose-800/50 border border-rose-500/40 text-amber-200 font-medium text-sm group-hover:bg-rose-700/60 transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-envelope-open"></i> <span>Abrir Sobre</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SOBRE 5 -->
+            <div class="card-perspective h-72 cursor-pointer group md:col-span-2 lg:col-span-1 md:max-w-md md:mx-auto lg:max-w-none w-full envelope-item" onclick="toggleEnvelope(event, 5)">
+                <div id="envelope-5" class="envelope-card relative w-full h-full rounded-2xl bg-gradient-to-br from-rose-900 via-rose-950 to-red-950 border-2 border-amber-500/70 shadow-2xl p-6 flex flex-col justify-between overflow-hidden group-hover:border-amber-400 gold-glow">
+                    <div id="flap-5" class="absolute inset-0 bg-rose-800/40 border-b border-amber-500/30 envelope-flap transition-transform duration-500"></div>
+                    
+                    <div class="flex justify-between items-start z-10">
+                        <span class="font-handwriting text-2xl text-amber-300">Carta N° 05 (Especial)</span>
+                        <div class="wax-seal w-12 h-12 rounded-full flex items-center justify-center text-amber-200 border border-amber-400 shadow-lg">
+                            <i class="fa-solid fa-crown text-lg"></i>
+                        </div>
+                    </div>
+
+                    <div class="text-center z-10 my-auto py-2">
+                        <div id="title-preview-5" class="transition-all duration-500">
+                            <p class="font-handwriting text-2xl text-rose-200/70 group-hover:text-amber-200">✨ Toca para revelar el sobre ✨</p>
+                        </div>
+                        <div id="title-revealed-5" class="hidden transition-all duration-500 transform scale-95 opacity-0">
+                            <span class="text-xs uppercase tracking-widest text-amber-400 font-semibold">Sección Revelada</span>
+                            <h2 class="font-handwriting text-3xl sm:text-4xl text-rose-100 font-bold mt-1">Por qué usted</h2>
+                            <p class="text-xs text-rose-300 mt-2 italic">(Toca nuevamente para leer la carta completa)</p>
+                        </div>
+                    </div>
+
+                    <div class="z-10 text-center">
+                        <button id="btn-5" class="w-full py-2 rounded-xl bg-amber-600/30 border border-amber-400/60 text-amber-200 font-medium text-sm group-hover:bg-amber-600/50 transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-envelope-open text-amber-300"></i> <span>Abrir Sobre Especial</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- VISTA COMPLETA DEL DOCUMENTO / CARTA ABIERTA -->
+    <div id="letterDocumentScreen" class="fixed inset-0 z-50 overflow-y-auto hidden bg-black/80 backdrop-blur-md p-4 sm:p-6 md:p-10 flex justify-center items-start">
+        
+        <!-- Documento de Papel de Carta -->
+        <div id="letterModalPaper" class="parchment-paper w-full max-w-3xl rounded-3xl p-6 sm:p-10 md:p-12 relative my-auto shadow-2xl border-4 border-amber-700/30 transform transition-all duration-500 letter-scroll">
+            
+            <!-- Botón para Regresar al Hub de Cartas -->
+            <button onclick="closeLetterDocument()" class="absolute top-4 right-4 sm:top-6 sm:right-6 px-4 py-2 bg-rose-900 text-amber-200 rounded-full font-medium hover:bg-rose-950 transition flex items-center gap-2 shadow-lg border border-amber-500/40 text-sm">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Regresar a las cartitas</span>
+            </button>
+
+            <!-- Encabezado de la Carta -->
+            <div class="border-b-2 border-rose-900/20 pb-6 mb-8 mt-8 sm:mt-2">
+                <div class="flex items-center gap-3 text-rose-800 mb-2">
+                    <span id="docLetterNumber" class="text-sm font-bold tracking-widest uppercase bg-rose-100 px-3 py-1 rounded-full border border-rose-300">Carta #</span>
+                    <i class="fa-solid fa-heart text-rose-600"></i>
+                </div>
+                <h2 id="docLetterTitle" class="font-cursive text-4xl sm:text-6xl text-rose-900">Título de la Carta</h2>
+            </div>
+
+            <!-- Imagen Relacionada a la Carta -->
+            <div class="mb-8 rounded-2xl overflow-hidden border-2 border-amber-900/20 shadow-md max-h-72">
+                <img id="docLetterImage" src="" alt="Imagen Romántica" class="w-full h-56 sm:h-72 object-cover" onerror="this.src='https://placehold.co/800x400/fecdd3/9f1239?text=❤️+Carta+de+Amor'">
+            </div>
+
+            <!-- CUERPO PRINCIPAL DEL DOCUMENTO DE LA CARTA -->
+            <div id="docLetterBody" class="font-serif-romantic text-lg sm:text-xl text-amber-950 leading-relaxed space-y-4 min-h-[180px] bg-white/40 p-6 rounded-2xl border border-amber-900/10">
+                <!-- AQUÍ ESCRIBE TÚ / Se llena dinámicamente con JS según la carta seleccionada -->
+            </div>
+
+            <!-- Pie de Carta / Firma Romántica -->
+            <div class="mt-10 pt-6 border-t border-rose-900/20 flex flex-col sm:flex-row justify-between items-center gap-4 text-rose-900">
+                <div class="font-handwriting text-2xl font-bold">
+                    Con todo mi corazón ❤️
+                </div>
+                <button onclick="closeLetterDocument()" class="px-6 py-2.5 bg-rose-700 text-white rounded-full font-semibold hover:bg-rose-800 transition shadow-md flex items-center gap-2">
+                    <i class="fa-solid fa-envelope"></i> Guardar y Volver a los Sobres
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Footer Global -->
+    <footer class="relative z-10 text-center py-6 text-rose-300/70 font-handwriting text-xl border-t border-rose-900/40 mt-10">
+        <p>Creado exclusivamente para usted con mucho cariño <i class="fa-solid fa-heart text-rose-500 animate-pulse"></i></p>
+    </footer>
+
+
+    <!-- BASE DE DATOS DE LAS CARTAS & LÓGICA INTERACTIVA -->
+    <script>
+        // ESTADO DE CADA SOBRE (paso 1: revelado, paso 2: abrir carta)
+        const envelopeState = {
+            1: { revealed: false },
+            2: { revealed: false },
+            3: { revealed: false },
+            4: { revealed: false },
+            5: { revealed: false }
+        };
+
+        // Rastrear cuál sobre está actualmente activo
+        let currentlyRevealedId = null;
+
+        // CONTENIDO DE LOS DOCUMENTOS / CARTAS
+        const lettersData = {
+            1: {
+                number: "01",
+                title: "Por qué me gusta",
+                image: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80",
+                content: `
+                    Le soy sincero nose, se me hizo una muchacha muy bonita y hermosa la verdad nunca entendi como empezo pero de repente se dio
+                    a lo mejor tiene que ver con mis gustos mas que nada pero no sabria decirle como paso, lo unico que si sabria decrile es que desde que la conozco
+                    tengo un motivo más para ir a la iglesia y levantarme tan temparno y ahora usted hace bonito todos los dias porque a quien no le gusta o gustaria
+                    despertar con un mensaje de buenos dias y que alguien se preocupe por si durmio bien y por que este bien y más que nada el como le fue en su dia.`
+            },
+            2: {
+                number: "02",
+                title: "Desde cuándo me gusta",
+                image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80",
+                content: `
+                    Realmente creo que me empezo a gustar como unos 2 meses antes de yo terminar mi curso como catecumeno, despues pues si me quede de coordinador
+                    con la esperanza de pasar tiempo con usted como amigos porque es una muy buena amiga, despues pues ya le empece a hablar mas y le conte muchas
+                    que yo no le cuento a nadie, y se fue ese sentimiento y empezo uno de amistad y de apresiacion por quedarse cuando le conte todo eso,
+                    y el sentimiento si bien no habia regresado del todo si empezo a gustarme de nuevo y la verdad yo nunca pense que si pudieramos llegar a salir
+                    pero ese domingo fue uno de los mejores que he tenido y la mejor de las salidas más que nada porque pudimos platicar y conocernos mejor, 
+                    le agradezco mucho la salida y hojala y se pueda volver a repetir.
+                `
+            },
+            3: {
+                number: "03",
+                title: "Cuál fue mi primera impresión de usted",
+                image: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=800&q=80",
+                content: `
+                    Mi primera impresion de usted si fue una de que se miraba medio payasita y si crei que nunca iba a llegar a hablar con usted como lo hago
+                    nunca pense que fueramos a salir ni mucho menos que llegaria a tenerle tanto aprecio como se lo tengo, pero de ahi en fuera ya cuando fui
+                    conociendola se me hizo una muchacha muy buena onda y que caia muy bien a escepcion de las veces que me hizo bullying con lo del padre nuestro,
+                    mas que nada porque fue por culpa de su hermano que me desconcentre y por eso dije eso, pero gracias a eso tambien nos hizimos amigos.
+                `
+            },
+            4: {
+                number: "04",
+                title: "Cómo me di cuenta que me gustaba",
+                image: "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=800&q=80",
+                content: `
+                    Me di cuenta que me gustaba porque empece a sentir muy bonito cuando hablaba con usted y más que nada lo termine de asegurar cuando me dio ese beso,
+                    he de decir que yo le dije que uno y nos terminamos dando más de uno pero no me quejo porque realmente me gusto, tambien he de decir que yo nunca
+                    me habia sentido asi con nadie y con usted fue distinto, descubri que a usted si la quiero realmente y no necesito hacer algo para ganarse mi aprecio
+                    y he de decir que el entrar en mi corazon esta dificil y que yo sea cariñoso con usted es más dificil porque yo no soy asi con nadie pero con usted
+                    me agrado ser asi y me senti muy agusto con usted el domingo antes, durante y despues del beso.
+                `
+            },
+            5: {
+                number: "05",
+                title: "Por qué usted",
+                image: "https://images.unsplash.com/photo-1494774157365-9e04c6720e47?auto=format&fit=crop&w=800&q=80",
+                content: `
+                    Porque se me hace una niña muy bonita y atractiva aunque usted se la pase diciendome que no tengo buenos gustos, usted es la que me gusta y no lo va a cambiar,
+                    es una muchacha ghermosa y si usted me lo permite quisiera estar con usted y pasar mas tiempo porque es muy agradable el estar con usted y nunca me he aburrido
+                    de hablar con usted y yo me aburro muy facil cuando el tema de conversacion no me gusta pero con usted es distinto, gracias por dejarme estar en su vida y
+                    thanks por estar en la mia y permanecer aun despues de que le dije lo que sentia por usted. 
+                    Solo tengo una pregunta, ¿Porque sigue queriendo estar conmigo despues de que le dije lo que sentia y yo nunca super que sentia ustedy mas que nada porque si me dio el beso?
+                `
+            }
+        };
+
+        // RESTABLECER / GUARDAR UN SOBRE A SU ESTADO CERRADO
+        function closeEnvelope(id) {
+            if (!id || !envelopeState[id]) return;
+
+            envelopeState[id].revealed = false;
+
+            const previewEl = document.getElementById(`title-preview-${id}`);
+            const revealedEl = document.getElementById(`title-revealed-${id}`);
+            const flapEl = document.getElementById(`flap-${id}`);
+            const btnEl = document.getElementById(`btn-${id}`);
+
+            // Regresar la solapa a su estado cerrado
+            if (flapEl) {
+                flapEl.style.transform = "translateY(0) scaleY(1)";
+                flapEl.style.opacity = "1";
+            }
+
+            // Ocultar título revelado y volver a mostrar vista previa
+            if (revealedEl) {
+                revealedEl.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    revealedEl.classList.add('hidden');
+                    if (previewEl) previewEl.classList.remove('hidden');
+                }, 200);
+            }
+
+            // Restablecer estilo del botón
+            if (btnEl) {
+                btnEl.innerHTML = `<i class="fa-solid fa-envelope-open"></i> <span>${id === 5 ? 'Abrir Sobre Especial' : 'Abrir Sobre'}</span>`;
+                btnEl.classList.remove('bg-rose-600', 'text-white', 'shadow-lg');
+                btnEl.classList.add('bg-rose-800/50');
+            }
+        }
+
+        // CERRAR TODOS LOS SOBRES Y DOCUMENTOS
+        function closeAllEnvelopes() {
+            if (currentlyRevealedId) {
+                closeEnvelope(currentlyRevealedId);
+                currentlyRevealedId = null;
+            }
+            closeLetterDocument();
+        }
+
+        // PASO 1 Y PASO 2 EN EL INTERACTIVO DE SOBRES
+        function toggleEnvelope(event, id) {
+            // Evitar que el clic en la carta se propague al evento global del documento
+            if (event) event.stopPropagation();
+
+            const state = envelopeState[id];
+
+            // Si hay un sobre diferente abierto/revelado, cerrarlo automáticamente
+            if (currentlyRevealedId && currentlyRevealedId !== id) {
+                closeEnvelope(currentlyRevealedId);
+                closeLetterDocument();
+            }
+
+            if (!state.revealed) {
+                // PASO 1: REVELAR EL TÍTULO DE LA SECCIÓN EN EL SOBRE
+                state.revealed = true;
+                currentlyRevealedId = id;
+
+                const previewEl = document.getElementById(`title-preview-${id}`);
+                const revealedEl = document.getElementById(`title-revealed-${id}`);
+                const flapEl = document.getElementById(`flap-${id}`);
+                const btnEl = document.getElementById(`btn-${id}`);
+
+                // Efecto visual de apertura de solapa
+                if (flapEl) {
+                    flapEl.style.transform = "translateY(-40px) scaleY(0.4)";
+                    flapEl.style.opacity = "0.3";
+                }
+
+                // Ocultar texto inicial e introducir título en la carta
+                if (previewEl) previewEl.classList.add('hidden');
+                
+                if (revealedEl) {
+                    revealedEl.classList.remove('hidden');
+                    setTimeout(() => {
+                        revealedEl.classList.remove('scale-95', 'opacity-0');
+                        revealedEl.classList.add('scale-100', 'opacity-100');
+                    }, 50);
+                }
+
+                // Cambiar el texto del botón
+                if (btnEl) {
+                    btnEl.innerHTML = `<i class="fa-solid fa-arrow-right"></i> <span>Leer Carta Completa</span>`;
+                    btnEl.classList.remove('bg-rose-800/50');
+                    btnEl.classList.add('bg-rose-600', 'text-white', 'shadow-lg');
+                }
+
+                // Lluvia corta de corazones
+                createHeartBurst(5);
+
+            } else {
+                // PASO 2: ABRIR EL DOCUMENTO COMPLETO EN LA OTRA VISTA / MODAL
+                openLetterDocument(id);
+            }
+        }
+
+        // ABRIR VISTA DEL DOCUMENTO SEPARADO
+        function openLetterDocument(id) {
+            const letter = lettersData[id];
+            if (!letter) return;
+
+            document.getElementById('docLetterNumber').innerText = `Carta N° ${letter.number}`;
+            document.getElementById('docLetterTitle').innerText = letter.title;
+            document.getElementById('docLetterImage').src = letter.image;
+            document.getElementById('docLetterBody').innerHTML = letter.content;
+
+            const docScreen = document.getElementById('letterDocumentScreen');
+            docScreen.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Evitar scroll de fondo
+
+            // Lluvia de corazones al abrir carta
+            createHeartBurst(12);
+        }
+
+        // CERRAR VISTA Y REGRESAR AL HUB DE CARTAS
+        function closeLetterDocument() {
+            const docScreen = document.getElementById('letterDocumentScreen');
+            if (docScreen) docScreen.classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Restaurar scroll
+        }
+
+        // DETECTAR CLIC EN CUALQUIER PARTE DE LA PÁGINA PARA CERRAR SI NO ES UNA CARTA
+        document.addEventListener('click', function(event) {
+            const isEnvelopeClick = event.target.closest('.envelope-item');
+            const isLetterModalPaperClick = event.target.closest('#letterModalPaper');
+
+            // Si se hace clic fuera de cualquier sobre y fuera del papel de la carta abierta, cerrar todo
+            if (!isEnvelopeClick && !isLetterModalPaperClick) {
+                closeAllEnvelopes();
+            }
+        });
+
+        // ANIMACIÓN DE CORAZONES FLOTANTES DE FONDO
+        function createHeart() {
+            const container = document.getElementById('heartsContainer');
+            if (!container) return;
+
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            
+            const heartIcons = ['fa-heart', 'fa-heart-pulse', 'fa-sparkles', 'fa-heart-circle-bolt'];
+            const randomIcon = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+            
+            heart.innerHTML = `<i class="fa-solid ${randomIcon}"></i>`;
+            
+            const left = Math.random() * 100;
+            const size = Math.random() * 22 + 12; // 12px a 34px
+            const duration = Math.random() * 5 + 6; // 6s a 11s
+
+            heart.style.left = left + 'vw';
+            heart.style.fontSize = size + 'px';
+            heart.style.animationDuration = duration + 's';
+
+            container.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+
+        // Crear burst o ráfaga de corazones
+        function createHeartBurst(count) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(createHeart, i * 60);
+            }
+        }
+
+        // Generar corazones flotantes de manera continua
+        setInterval(createHeart, 450);
+    </script>
+</body>
+</html>
